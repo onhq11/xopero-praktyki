@@ -1,0 +1,57 @@
+# Część pierwsza
+- VSS – Volume Shadow Copy Service umożliwia tworzenie snapshotów w systemie Windows
+- Deduplikacja – Usuwanie zduplikowanych plików, aby zaoszczędzić miejsce na dysku
+- Kompresja – Proces kompresji, czyli zmniejszania plików
+- Rodzaje kompresji – Bezstratna (np. ZIP) i Stratna (np. JPEG, MP3)
+- Stopnie kompresji – Określają poziom redukcji danych, wpływając na jakość i czas dekompresji.
+- Szyfrowanie (typy) – Dzieli się na symetryczne (np. AES) i asymetryczne (np. RSA).
+- Szyfrowanie symetryczne – Używa tego samego klucza do szyfrowania i deszyfrowania danych.
+- Algorytm AES – Algorytm szyfrowania blokowego używany do ochrony danych.
+- Tryby - ECB, CBC – ECB szyfruje każdy blok niezależnie, CBC stosuje łączenie bloków dla większego bezpieczeństwa.
+- Klucz domyślny i klucz użytkownika w kontekście naszej aplikacji
+- Retencja plików – Określa czas przechowywania plików przed ich usunięciem lub nadpisaniem.
+- Kopie zapasowe - pełne, przyrostowe i różnicowe – Pełna kopia zapisuje wszystkie dane, przyrostowa tylko zmiany od ostatniej kopii, a różnicowa tylko zmiany od pełnej kopii.
+- Wykonywanie kopii zapasowych na prawach użytkownika – Umożliwia tworzenie kopii zapasowych bez uprawnień administratora
+- Zmienne środowiskowe – Zmienne przechowywane na poziomie systemu operacyjnego, takie zmienne globalne do których ma dostęp każda aplikacja na komputerze
+- Harmonogram (systemowy i obecny w naszej aplikacji) – Systemowy to np. Windows Task Scheduler
+- Pliki ukryte – Pliki niewidoczne przy domyślnych ustawieniach eksploratora
+- Filtry plików – Reguły pozwalające na filtrowanie plików według rozszerzeń, rozmiaru lub innych parametrów.
+- Usługa systemowa (poziomy/rodzaje uprawnień) – Proces działający w tle z różnymi poziomami uprawnień (np. systemowe, użytkownika, administratora).
+- Active Directory (podstawowe informacje) – Usługa katalogowa Microsoft umożliwiająca zarządzanie użytkownikami i zasobami sieciowymi.
+- Wirtualizacja (rodzaje wirtualizatorów, maszyny wirtualne) – Technologie jak VMware, Hyper-V i VirtualBox umożliwiające uruchamianie maszyn wirtualnych.
+- Redundancja – Nadmiarowość zasobów zapewniająca wysoką dostępność i odporność na awarie.
+- Chmura – Zdalne przechowywanie i przetwarzanie danych na serwerach dostawcy usług chmurowych.
+
+# Część druga
+- NAS – Network Attached Storage, czyli dysk sieciowy
+- QNAP, Synology, Asustor, Netgear - Znane marki serwerów NAS
+- Mono – Implementacja .NET umożliwiająca uruchamianie aplikacji C# na różnych systemach operacyjnych.
+- Systemy wersjonowania (Git i inne) – Git, SVN, Mercurial
+- Docker, Kubernetes – Docker to platforma konteneryzacji, a Kubernetes automatyzuje zarządzanie kontenerami.
+- Strony wspierające wersjonowanie w chmurze (GitHub i inne) – GitHub, GitLab, Bitbucket
+- Klastry – Zbiory połączonych serwerów pracujących jako jeden system dla zwiększenia wydajności i niezawodności
+- Centra Danych – Obiekty przechowujące serwery i infrastrukturę IT do obsługi aplikacji i danych w chmurze
+- RAID (rodzaje) – Macierze dyskowe RAID 0, 1, 5, 6, 10 zapewniające różne poziomy wydajności i odporności na awarie
+- Systemy plików (FAT, NTFS, ext - platformy, podstawowe różnice) – FAT jest prosty i kompatybilny, NTFS obsługuje zaawansowane uprawnienia, ext jest popularny w Linuksie.
+- Rejestr systemowy Windows – Baza danych przechowująca ustawienia systemu operacyjnego i aplikacji.
+- Foldery systemowe (Windows, Linux) – Specjalne katalogi C:\Windows\System32 i /etc/ zawierające pliki systemowe.
+- Amazon Web Service (S3, EC2), Azure – AWS i Azure to platformy chmurowe oferujące przechowywanie (S3), maszyny wirtualne (EC2) i inne usługi.
+- OpenStack – Otwarta platforma chmurowa do budowy prywatnych i publicznych środowisk obliczeniowych.
+
+# Część trzecia
+- Linki symboliczne – Skróty na poziomie systemu plików, które wskazują na inne pliki lub katalogi, działając podobnie do aliasów.
+- Specjalne pliki systemowe (pagefile.sys, hiberfil.sys, swapfile.sys) – Pliki zarządzane przez system Windows do obsługi pamięci wirtualnej (pagefile.sys, swapfile.sys) i hibernacji (hiberfil.sys).
+- Rejestr zdarzeń Windows i logowanie zdarzeń w kontekście programowania – Mechanizm systemowy umożliwiający rejestrowanie i analizowanie działań systemu oraz aplikacji w celu diagnostyki i monitorowania.
+- Grupy robocze Windows – Proste sieci komputerowe pozwalające na udostępnianie plików i drukarek między komputerami bez centralnego zarządzania domeną.
+- IPv4, IPv6 – Protokoły adresacji sieciowej, gdzie IPv4 używa 32-bitowych adresów, a IPv6 wprowadza 128-bitowe adresy dla większej liczby urządzeń.
+- MSI, EXE – Pliki MSI służą do instalacji oprogramowania z użyciem Windows Installer, natomiast EXE to pliki wykonywalne, które mogą uruchamiać dowolne aplikacje.
+- Skrypty .BAT, skrypty .sh – Pliki wsadowe dla Windows (.BAT) oraz skrypty powłoki dla systemów Unix/Linux (.sh), pozwalające na automatyzację zadań.
+- Ograniczenia systemów w kontekście ograniczeń dotyczących ścieżek do plików – Systemy operacyjne narzucają limity na długość i format ścieżek, np. Windows ogranicza je do 260 znaków, chyba że używa się specjalnych prefiksów.
+- Typy plików a rozszerzenia – Typ pliku określa jego zawartość i sposób otwierania, podczas gdy rozszerzenie to końcówka nazwy pliku, która sugeruje jego format.
+- DLL a EXE – EXE to samodzielne programy wykonywalne, a DLL to biblioteki dynamiczne, które dostarczają funkcje używane przez wiele programów.
+- Procesy a wątki – Proces to uruchomiona aplikacja z własnym obszarem pamięci, a wątek to mniejsza jednostka wykonawcza wewnątrz procesu, współdzieląca jego zasoby.
+- Wielowątkowość – Technika programistyczna umożliwiająca jednoczesne wykonywanie wielu wątków w ramach jednego procesu dla lepszej wydajności.
+- Grafika wektorowa a rastrowa – Grafika wektorowa składa się z obiektów matematycznych skalowanych bez utraty jakości, a rastrowa z pikseli o określonej rozdzielczości.
+- Bitlocker – Narzędzie szyfrujące dyski w systemie Windows, zabezpieczające dane przed nieautoryzowanym dostępem.
+- HDD a SSD – HDD to tradycyjny dysk magnetyczny o większej pojemności, a SSD to szybszy dysk półprzewodnikowy bez ruchomych części.
+- UEFI a BIOS – BIOS to starsze oprogramowanie do zarządzania startem systemu, a UEFI to jego nowocześniejszy następca z obsługą większych dysków i interfejsem graficznym.
