@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using NoteApp.Config;
+using NoteApp.Encryption;
 
 namespace NoteApp;
 
@@ -6,23 +8,22 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        if (!File.Exists("appsettings.json"))
-        {
-            Console.WriteLine("Appsettings.json not found");
-            return;
-        }
+        var appSettingsFileReader = new AppSettingsFileReader();
+        var appSettings = appSettingsFileReader.GetAppSettings();
         
-        var builder = new ConfigurationBuilder();
-        builder.SetBasePath(Directory.GetCurrentDirectory());
-        builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-        var appSettings = builder.Build();
-        
-        var databaseConnectionSettings = new ConnectionStringBuilder();
-        appSettings.GetSection("DatabaseConnection").Bind(databaseConnectionSettings);
-        
-        var connectionString = databaseConnectionSettings.ToString();
-        var databaseConnection = new DatabaseConnection(connectionString);
+        var config = new ConfigBuilder(appSettings);
 
+        var isDebugMode = config.IsDebugMode();
+        var databaseConnection = new PostgresDatabaseDriver(config.GetDatabaseConnectionString());
+
+        UI.Ui.Menu(isDebugMode);
+        
+        var encrypted = AesEncryptor.Encrypt("aaa", "aaa");
+        Console.WriteLine(encrypted);
+        Console.WriteLine("Type key: ");
+        var key = Console.ReadLine();
+        var decrypted = AesEncryptor.Decrypt(key, "aaa");
+        Console.WriteLine(decrypted);
         databaseConnection.Init();
     }
 }
