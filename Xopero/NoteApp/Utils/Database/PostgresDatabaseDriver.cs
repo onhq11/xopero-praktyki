@@ -101,6 +101,46 @@ public class PostgresDatabaseDriver(bool isDebugMode, string databaseConnectionS
         }
     }
     
+    public bool Update(string tableName, int id, Dictionary<string, object> columns)
+    {
+        try
+        {
+            using var connection = new NpgsqlConnection(databaseConnectionString);
+            connection.Open();
+
+            var setClause = new StringBuilder();
+            var parameters = new List<NpgsqlParameter>();
+
+            foreach (var column in columns)
+            {
+                if (setClause.Length > 0)
+                {
+                    setClause.Append(", ");
+                }
+
+                setClause.Append($"{column.Key} = @{column.Key}");
+                parameters.Add(new NpgsqlParameter(column.Key, column.Value));
+            }
+
+            var query = $"UPDATE {tableName} SET {setClause} WHERE id = @id";
+            using var cmd = new NpgsqlCommand(query, connection);
+            cmd.Parameters.AddWithValue("id", id);
+            cmd.Parameters.AddRange(parameters.ToArray());
+            cmd.ExecuteNonQuery();
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            if (isDebugMode)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return false;
+        }
+    }
+    
     public bool Delete(string tableName, int id)
     {
         try

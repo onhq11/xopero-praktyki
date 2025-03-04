@@ -49,7 +49,7 @@ public class ListNotes
                     View(isDebugMode, databaseConnectionString);
                 }
                 
-                ReadNote.View(isDebugMode, databaseConnectionString, item);
+                DecryptNote.View(isDebugMode, databaseConnectionString, item);
 
                 break;
         }

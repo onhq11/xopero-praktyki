@@ -69,6 +69,29 @@ public class NoteController
         return databaseDriver.Insert("notes", dataToInsert);
     }
 
+    public static bool UpdateNote(bool isDebugMode, string databaseConnectionString, int id, string title,
+        string content, string key)
+    {
+        var encryptedData = AesEncryptor.Encrypt(content, key);
+
+        if (isDebugMode)
+        {
+            Console.WriteLine($"Title: {title}");
+            Console.WriteLine($"Content: {content}");
+            Console.WriteLine($"Encryption key: {key}");
+            Console.WriteLine($"Encrypted data: {encryptedData}\n");
+        }
+        
+        var databaseDriver = new PostgresDatabaseDriver(isDebugMode, databaseConnectionString);
+        var dataToInsert = new Dictionary<string, object>
+        {
+            {"title", title},
+            {"content", encryptedData}
+        };
+
+        return databaseDriver.Update("notes", id, dataToInsert);
+    }
+
     public static bool DeleteNote(bool isDebugMode, string databaseConnectionString, int id)
     {
         if (isDebugMode)
