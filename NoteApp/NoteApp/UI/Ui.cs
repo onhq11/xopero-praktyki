@@ -1,19 +1,23 @@
+using NoteApp.Controllers;
+using NoteApp.UI.Views;
+
 namespace NoteApp.UI;
 
 public class Ui
 {
-    public static void Menu(bool isDebugMode)
+    public static void Menu(bool isDebugMode, string databaseConnectionString)
     {
+        Console.Clear();
+        Console.WriteLine("\n== NoteApp ==\n");
         Console.WriteLine("[1] Add note");
         Console.WriteLine("[2] List notes");
 
         if (isDebugMode)
         {
-            Console.WriteLine("\n\n== Developer options ==");
             Console.WriteLine("[3] Raw read from database");
         }
         
-        Console.WriteLine("\n\n\n\n[9] Exit");
+        Console.WriteLine("\n\n[9] Exit");
         Console.Write($"\nChoose an option: ");
 
         var selected = Console.ReadLine();
@@ -21,55 +25,25 @@ public class Ui
         
         switch (selected)
         {
-            case "1":
-                AddNote();
+            case "1": 
+                AddNote.View(isDebugMode, databaseConnectionString);
                 break;
             
             case "2":
-                ListNotes();
+                ListNotes.View(isDebugMode, databaseConnectionString);
                 break;
             
             case "3":
-                if (!isDebugMode)
-                {
-                    InvalidOption();
-                }
+                if (!isDebugMode) break;
                 
-                RawReadFromDatabase();
+                RawReadFromDatabase.View(isDebugMode, databaseConnectionString);
                 break;
             
             case "9":
-                Exit();
-                break;
-            
-            default:
-                InvalidOption();
-                break;
+                Exit.View();
+                return;
         }
-    }
 
-    private static void AddNote()
-    {
-        
-    }
-
-    private static void ListNotes()
-    {
-        
-    }
-
-    private static void RawReadFromDatabase()
-    {
-        
-    }
-
-    private static void Exit()
-    {
-        Environment.Exit(0);
-    }
-
-    private static void InvalidOption()
-    {
-        Console.WriteLine(" == INVALID OPTION == \n\n");
+        Menu(isDebugMode, databaseConnectionString);
     }
 }

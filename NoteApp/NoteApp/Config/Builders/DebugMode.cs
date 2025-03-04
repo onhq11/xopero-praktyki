@@ -8,6 +8,6 @@ public class DebugMode(IConfigurationRoot appSettings)
 
     public bool IsDebugMode()
     {
-        return _debugMode == "false";
+        return _debugMode == "True";
     }
 }

@@ -16,8 +16,10 @@ public class AesEncryptor
         return Convert.ToBase64String(aes.IV) + ":" + Convert.ToBase64String(encrypted);
     }
 
-    public static string Decrypt(string encryptedText, string key)
+    public static string Decrypt(string? encryptedText, string key)
     {
+        if (string.IsNullOrEmpty(encryptedText)) return "";
+        
         var parts = encryptedText.Split(':');
         
         var aes = Aes.Create();
@@ -25,7 +27,18 @@ public class AesEncryptor
         aes.IV = Convert.FromBase64String(parts[0]);
        
         var decryptor = aes.CreateDecryptor();
-        var decrypted = decryptor.TransformFinalBlock(Convert.FromBase64String(parts[1]), 0, Convert.FromBase64String(parts[1]).Length);
+        byte[] decrypted;
+
+        try
+        {
+            decrypted = decryptor.TransformFinalBlock(Convert.FromBase64String(parts[1]), 0,
+                Convert.FromBase64String(parts[1]).Length);
+        }
+        catch (Exception ex)
+        {
+            return "";
+        }
+        
         return Encoding.UTF8.GetString(decrypted);
     }
 }

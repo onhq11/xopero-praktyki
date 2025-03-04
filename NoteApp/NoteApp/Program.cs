@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using NoteApp.Config;
-using NoteApp.Encryption;
+﻿using NoteApp.Config;
+using NoteApp.UI;
+using NoteApp.Utils.Database;
 
 namespace NoteApp;
 
@@ -14,16 +14,8 @@ public class Program
         var config = new ConfigBuilder(appSettings);
 
         var isDebugMode = config.IsDebugMode();
-        var databaseConnection = new PostgresDatabaseDriver(config.GetDatabaseConnectionString());
+        var databaseConnectionString = config.GetDatabaseConnectionString();
 
-        UI.Ui.Menu(isDebugMode);
-        
-        var encrypted = AesEncryptor.Encrypt("aaa", "aaa");
-        Console.WriteLine(encrypted);
-        Console.WriteLine("Type key: ");
-        var key = Console.ReadLine();
-        var decrypted = AesEncryptor.Decrypt(key, "aaa");
-        Console.WriteLine(decrypted);
-        databaseConnection.Init();
+        Ui.Menu(isDebugMode, databaseConnectionString);
     }
 }

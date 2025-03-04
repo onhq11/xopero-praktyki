@@ -5,14 +5,8 @@ namespace NoteApp.Config;
 
 public class ConfigBuilder(IConfigurationRoot appSettings)
 {
-    private DatabaseConnection _databaseConnection = new DatabaseConnection(appSettings);
-    private DebugMode _debugMode = new DebugMode(appSettings);
-
-    private void Init()
-    {
-        _databaseConnection = new DatabaseConnection(appSettings);
-        _debugMode = new DebugMode(appSettings);
-    }
+    private readonly DatabaseConnection _databaseConnection = new DatabaseConnection(appSettings);
+    private readonly DebugMode _debugMode = new DebugMode(appSettings);
 
     public string GetDatabaseConnectionString()
     {

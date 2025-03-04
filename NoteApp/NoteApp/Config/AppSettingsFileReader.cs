@@ -4,7 +4,7 @@ namespace NoteApp.Config;
 
 public class AppSettingsFileReader
 {
-    private IConfigurationRoot _appSettings = new ConfigurationBuilder().Build();
+    private readonly IConfigurationRoot _appSettings = new ConfigurationBuilder().Build();
     
     public AppSettingsFileReader()
     {
