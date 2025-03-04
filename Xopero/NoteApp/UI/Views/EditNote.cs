@@ -36,13 +36,13 @@ public class EditNote
         var success = NoteController.UpdateNote(isDebugMode, databaseConnectionString, id, newTitle, newContent, key);
         if (!success)
         {
-            Console.WriteLine("\nFailed to add note.\n");
+            Console.WriteLine("\nFailed to edit note.\n");
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
             return;
         }
         
-        Console.WriteLine("\nNote added successfully!\n");
+        Console.WriteLine("\nNote edited successfully!\n");
         Console.WriteLine("\nPress any key to continue...");
         Console.ReadKey();
     }

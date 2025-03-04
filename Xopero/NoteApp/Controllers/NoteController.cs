@@ -76,6 +76,7 @@ public class NoteController
 
         if (isDebugMode)
         {
+            Console.WriteLine($"ID: {id.ToString()}");
             Console.WriteLine($"Title: {title}");
             Console.WriteLine($"Content: {content}");
             Console.WriteLine($"Encryption key: {key}");
