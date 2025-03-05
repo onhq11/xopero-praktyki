@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace NoteApp.Encryption;
+namespace NoteApp.Utils.Encryption;
 
 public class AesEncryptor
 {

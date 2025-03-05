@@ -2,7 +2,7 @@ using NoteApp.Config;
 using NoteApp.Controllers;
 using NoteApp.Database;
 using NoteApp.Database.Models;
-using NoteApp.Encryption;
+using NoteApp.Utils.Encryption;
 
 namespace NoteApp.UI.Views;
 
