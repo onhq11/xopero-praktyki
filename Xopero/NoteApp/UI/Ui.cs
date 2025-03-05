@@ -1,18 +1,19 @@
-using NoteApp.Controllers;
+using NoteApp.Config;
+using NoteApp.Database;
 using NoteApp.UI.Views;
 
 namespace NoteApp.UI;
 
 public class Ui
 {
-    public static void Menu(bool isDebugMode, string databaseConnectionString)
+    public static void Menu(AppDbContext appDbContext, ConfigBuilder config)
     {
         Console.Clear();
         Console.WriteLine("\n== NoteApp ==\n");
         Console.WriteLine("[1] Add note");
         Console.WriteLine("[2] List notes");
 
-        if (isDebugMode)
+        if (config.IsDebugMode())
         {
             Console.WriteLine("[3] Raw read from database");
         }
@@ -26,17 +27,17 @@ public class Ui
         switch (selected)
         {
             case "1": 
-                AddNote.View(isDebugMode, databaseConnectionString);
+                AddNote.View(appDbContext, config);
                 break;
             
             case "2":
-                ListNotes.View(isDebugMode, databaseConnectionString);
+                ListNotes.View(appDbContext, config);
                 break;
             
             case "3":
-                if (!isDebugMode) break;
+                if (!config.IsDebugMode()) break;
                 
-                RawReadFromDatabase.View(isDebugMode, databaseConnectionString);
+                RawReadFromDatabase.View(appDbContext);
                 break;
             
             case "9":
@@ -44,6 +45,6 @@ public class Ui
                 return;
         }
 
-        Menu(isDebugMode, databaseConnectionString);
+        Menu(appDbContext, config);
     }
 }
