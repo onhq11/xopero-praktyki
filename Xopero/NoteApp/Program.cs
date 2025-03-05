@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NoteApp.Config;
-using NoteApp.Controllers;
 using NoteApp.Database;
 using NoteApp.UI;
 

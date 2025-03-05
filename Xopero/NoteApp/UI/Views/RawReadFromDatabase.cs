@@ -1,4 +1,3 @@
-using NoteApp.Config;
 using NoteApp.Controllers;
 using NoteApp.Database;
 
