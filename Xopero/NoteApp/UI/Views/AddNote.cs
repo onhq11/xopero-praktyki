@@ -1,10 +1,12 @@
+using NoteApp.Config;
 using NoteApp.Controllers;
+using NoteApp.Database;
 
 namespace NoteApp.UI.Views;
 
 public class AddNote
 {
-    public static void View(bool isDebugMode, string databaseConnectionString)
+    public static void View(AppDbContext appDbContext, ConfigBuilder config)
     {
         Console.Clear();
         Console.WriteLine("\n== Add note ==\n");
@@ -31,7 +33,7 @@ public class AddNote
         Console.Clear();
         Console.WriteLine("\n== Encrypting note ==\n");
 
-        var success = NoteController.CreateNote(isDebugMode, databaseConnectionString, title, content, key);
+        var success = NoteController.Create(appDbContext, config, title, content, key);
         if (!success)
         {
             Console.WriteLine("\nFailed to add note.\n");

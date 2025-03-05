@@ -1,15 +1,18 @@
+using NoteApp.Config;
 using NoteApp.Controllers;
+using NoteApp.Database;
+using NoteApp.Database.Models;
 
 namespace NoteApp.UI.Views;
 
 public class DeleteNote
 {
-    public static void View(bool isDebugMode, string databaseConnectionString, int id)
+    public static void View(AppDbContext appDbContext, ConfigBuilder config, Note item)
     {
         Console.Clear();
         Console.WriteLine("\n== Deleting note ==\n");
         
-        var success = NoteController.DeleteNote(isDebugMode, databaseConnectionString, id);
+        var success = NoteController.Delete(appDbContext, config, item.Id);
         if (!success)
         {
             Console.WriteLine("\nFailed to remove note.\n");
