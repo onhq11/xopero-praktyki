@@ -1,0 +1,7 @@
+﻿services:
+  noteapp:
+    image: noteapp
+    container_name: noteapp
+    build:
+      context: .
+      dockerfile: NoteApp/Dockerfile
