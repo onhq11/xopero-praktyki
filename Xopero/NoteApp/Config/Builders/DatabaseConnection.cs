@@ -18,6 +18,6 @@ public class DatabaseConnection
     public new string ToString()
     {
         return
-            $"Host={Host};Port={Port};Database={Database};Username={Username};Password={Password}";
+            $"Server={Host};Port={Port};Database={Database};User Id={Username};Password={Password}";
     }
 }
