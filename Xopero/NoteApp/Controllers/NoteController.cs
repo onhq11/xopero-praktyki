@@ -1,119 +1,106 @@
-using Microsoft.EntityFrameworkCore;
-using NoteApp.Config;
-using NoteApp.Database;
-using NoteApp.Database.Models;
 using NoteApp.Encryption;
+using NoteApp.UI;
+using NoteApp.Utils.Database;
+using Npgsql;
 
 namespace NoteApp.Controllers;
 
 public class NoteController
 {
-    public static List<Note> List(AppDbContext appDbContext)
+    public static List<Dictionary<string, object>> ListRawNotesData(bool isDebugMode, string databaseConnectionString)
     {
-        var items = appDbContext.Notes.ToList();
+        var databaseDriver = new PostgresDatabaseDriver(isDebugMode, databaseConnectionString);
+        var items = databaseDriver.List("notes");
+
         return items;
     }
     
-    public static Note? Read(AppDbContext appDbContext, int id)
+    public static List<Dictionary<string, object>> ListNotes(bool isDebugMode, string databaseConnectionString)
     {
-        var item = appDbContext.Notes.Find(id);
-        return item ?? null;
+        var items = new List<Dictionary<string, object>>();
+
+        try
+        {
+            using var connection = new NpgsqlConnection(databaseConnectionString);
+            connection.Open();
+
+            var query = "SELECT id, title FROM notes";
+            using var cmd = new NpgsqlCommand(query, connection);
+            items = PostgresDatabaseDriver.ExecuteReader(cmd.ExecuteReader());
+        }
+        catch (Exception ex)
+        {
+            if (isDebugMode)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        return items;
     }
     
-    public static bool Create(AppDbContext appDbContext, ConfigBuilder config, string title, string content, string key)
+    public static Dictionary<string, object>? ReadNote(bool isDebugMode, string databaseConnectionString, int id)
     {
-        try
-        {
-            var encryptedData = AesEncryptor.Encrypt(content, key);
+        var databaseDriver = new PostgresDatabaseDriver(isDebugMode, databaseConnectionString);
+        var item = databaseDriver.Read("notes", id);
 
-            if (config.IsDebugMode())
-            {
-                Console.WriteLine($"Title: {title}");
-                Console.WriteLine($"Content: {content}");
-                Console.WriteLine($"Encryption key: {key}");
-                Console.WriteLine($"Encrypted data: {encryptedData}\n");
-            }
+        return item;
+    }
+    
+    public static bool CreateNote(bool isDebugMode, string databaseConnectionString, string title, string content, string key)
+    {
+        var encryptedData = AesEncryptor.Encrypt(content, key);
 
-            var newNotes = new Note { Title = title, Content = encryptedData };
-            appDbContext.Notes.Add(newNotes);
-            appDbContext.SaveChanges();
-            return true;
-        }
-        catch (Exception ex)
+        if (isDebugMode)
         {
-            if (config.IsDebugMode())
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
+            Console.WriteLine($"Title: {title}");
+            Console.WriteLine($"Content: {content}");
+            Console.WriteLine($"Encryption key: {key}");
+            Console.WriteLine($"Encrypted data: {encryptedData}\n");
         }
+
+        var databaseDriver = new PostgresDatabaseDriver(isDebugMode, databaseConnectionString);
+        var dataToInsert = new Dictionary<string, object>
+        {
+            {"title", title},
+            {"content", encryptedData}
+        };
+
+        return databaseDriver.Insert("notes", dataToInsert);
     }
 
-    public static bool Update(AppDbContext appDbContext, ConfigBuilder config, int id, string title,
+    public static bool UpdateNote(bool isDebugMode, string databaseConnectionString, int id, string title,
         string content, string key)
     {
-        try
-        {
-            var encryptedData = AesEncryptor.Encrypt(content, key);
+        var encryptedData = AesEncryptor.Encrypt(content, key);
 
-            if (config.IsDebugMode())
-            {
-                Console.WriteLine($"ID: {id.ToString()}");
-                Console.WriteLine($"Title: {title}");
-                Console.WriteLine($"Content: {content}");
-                Console.WriteLine($"Encryption key: {key}");
-                Console.WriteLine($"Encrypted data: {encryptedData}\n");
-            }
-        
-            using var context = new AppDbContext(new DbContextOptions<AppDbContext>());
-            var note = context.Notes.Find(id);
-            if (note == null)
-            {
-                throw new Exception("Note not found");
-            }
-            
-            note.Title = title;
-            note.Content = encryptedData;
-            context.SaveChanges();
-            return true;
-        }
-        catch (Exception ex)
+        if (isDebugMode)
         {
-            if (config.IsDebugMode())
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
+            Console.WriteLine($"ID: {id.ToString()}");
+            Console.WriteLine($"Title: {title}");
+            Console.WriteLine($"Content: {content}");
+            Console.WriteLine($"Encryption key: {key}");
+            Console.WriteLine($"Encrypted data: {encryptedData}\n");
         }
+        
+        var databaseDriver = new PostgresDatabaseDriver(isDebugMode, databaseConnectionString);
+        var dataToInsert = new Dictionary<string, object>
+        {
+            {"title", title},
+            {"content", encryptedData}
+        };
+
+        return databaseDriver.Update("notes", id, dataToInsert);
     }
 
-    public static bool Delete(AppDbContext appDbContext, ConfigBuilder config, int id)
+    public static bool DeleteNote(bool isDebugMode, string databaseConnectionString, int id)
     {
-        try
+        if (isDebugMode)
         {
-            if (config.IsDebugMode())
-            {
-                Console.WriteLine($"ID to remove: {id}");
-            }
-            
-            using var context = new AppDbContext(new DbContextOptions<AppDbContext>());
-            var note = context.Notes.Find(id);
-            if (note == null)
-            {
-                throw new Exception("Note not found");
-            }
-            
-            context.Notes.Remove(note);
-            context.SaveChanges();
-            return true;
+            Console.WriteLine($"ID to remove: {id}");
         }
-        catch (Exception ex)
-        {
-            if (config.IsDebugMode())
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }
+
+        var databaseDriver = new PostgresDatabaseDriver(isDebugMode, databaseConnectionString);
+        return databaseDriver.Delete("notes", id);
     }
 }

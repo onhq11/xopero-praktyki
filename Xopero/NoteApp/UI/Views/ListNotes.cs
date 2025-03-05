@@ -1,17 +1,16 @@
-using NoteApp.Config;
 using NoteApp.Controllers;
-using NoteApp.Database;
+using NoteApp.Encryption;
 
 namespace NoteApp.UI.Views;
 
 public class ListNotes
 {
-    public static void View(AppDbContext appDbContext, ConfigBuilder config)
+    public static void View(bool isDebugMode, string databaseConnectionString)
     {
         Console.Clear();
         Console.WriteLine("\n== List notes ==\n");
         
-        var items = NoteController.List(appDbContext);
+        var items = NoteController.ListNotes(isDebugMode, databaseConnectionString);
         if (items.Count <= 0)
         {
             Console.WriteLine("No notes found");
@@ -22,7 +21,7 @@ public class ListNotes
         
         foreach (var row in items)
         {
-            Console.WriteLine($"[{row.Id}] {row.Title}");
+            Console.WriteLine($"[{row["id"]}] {row["title"]}");
         }
         
         Console.WriteLine("\n\n[0] Return");
@@ -34,23 +33,23 @@ public class ListNotes
         switch (selected)
         {
             case "0":
-                Ui.Menu(appDbContext, config);
+                Ui.Menu(isDebugMode, databaseConnectionString);
                 return;
             
             default:
                 if (string.IsNullOrEmpty(selected))
                 {
-                    View(appDbContext, config);
+                    View(isDebugMode, databaseConnectionString);
                 }
                 
-                var item = items.FirstOrDefault(item => item.Id.ToString() == selected);
+                var item = items.FirstOrDefault(item => item.ContainsKey("id") && item["id"].ToString() == selected);
                 
                 if (item == null)
                 {
-                    View(appDbContext, config);
+                    View(isDebugMode, databaseConnectionString);
                 }
                 
-                DecryptNote.View(appDbContext, config, item);
+                DecryptNote.View(isDebugMode, databaseConnectionString, item);
 
                 break;
         }

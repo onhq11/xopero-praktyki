@@ -1,14 +1,11 @@
-using NoteApp.Config;
 using NoteApp.Controllers;
-using NoteApp.Database;
-using NoteApp.Database.Models;
 using NoteApp.Encryption;
 
 namespace NoteApp.UI.Views;
 
 public class DecryptNote
 {
-    public static void View(AppDbContext appDbContext, ConfigBuilder config, Note? item)
+    public static void View(bool isDebugMode, string databaseConnectionString, Dictionary<string, object>? item)
     {
         Console.Clear();
         Console.WriteLine("\n== Read note ==\n");
@@ -19,18 +16,18 @@ public class DecryptNote
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
             
-            Ui.Menu(appDbContext, config);
+            Ui.Menu(isDebugMode, databaseConnectionString);
             return;
         }
         
-        var note = NoteController.Read(appDbContext, item.Id);
+        var note = NoteController.ReadNote(isDebugMode, databaseConnectionString, (int)item["id"]);
         if (note == null)
         {
             Console.WriteLine("There was an error while reading note");
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
             
-            Ui.Menu(appDbContext, config);
+            Ui.Menu(isDebugMode, databaseConnectionString);
             return;
         }
 
@@ -45,7 +42,7 @@ public class DecryptNote
                 key = Console.ReadLine();
             }
 
-            decryptedContent = AesEncryptor.Decrypt(note.Content, key);
+            decryptedContent = AesEncryptor.Decrypt(note["content"].ToString(), key);
 
             if (string.IsNullOrEmpty(decryptedContent))
             {
@@ -60,10 +57,14 @@ public class DecryptNote
             Console.WriteLine("\nPress any key to continue...");
             Console.ReadKey();
             
-            Ui.Menu(appDbContext, config);
+            Ui.Menu(isDebugMode, databaseConnectionString);
             return;
         }
+
+        var id = (int)item["id"];
+        var title = item["title"].ToString() ?? "(no title)";
+        var content = decryptedContent;
         
-        ReadNote.View(appDbContext, config, item, decryptedContent);
+        ReadNote.View(isDebugMode, databaseConnectionString, id, title, content);
     }
 }

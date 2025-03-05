@@ -1,19 +1,18 @@
-using NoteApp.Config;
-using NoteApp.Database;
-using NoteApp.Database.Models;
+using NoteApp.Controllers;
+using NoteApp.Encryption;
 
 namespace NoteApp.UI.Views;
 
 public class ReadNote
 {
-    public static void View(AppDbContext appDbContext, ConfigBuilder config, Note item, string decryptedContent)
+    public static void View(bool isDebugMode, string databaseConnectionString, int id, string title, string content)
     {
         Console.Clear();
         Console.WriteLine("\n== Read note ==\n");
         
-        Console.WriteLine($"ID: {item.Id.ToString()}");
-        Console.WriteLine($"Title: {item.Title}");
-        Console.WriteLine($"Content: {decryptedContent}");
+        Console.WriteLine($"ID: {id.ToString()}");
+        Console.WriteLine($"Title: {title}");
+        Console.WriteLine($"Content: {content}");
         
         Console.WriteLine("\n[1] Edit");
         Console.WriteLine("[2] Delete");
@@ -25,19 +24,19 @@ public class ReadNote
         switch (selected)
         {
             case "0":
-                ListNotes.View(appDbContext, config);
+                ListNotes.View(isDebugMode, databaseConnectionString);
                 break;
             
             case "1":
-                EditNote.View(appDbContext, config, item, decryptedContent);
+                EditNote.View(isDebugMode, databaseConnectionString, id, title, content);
                 break;
             
             case "2":
-                DeleteNote.View(appDbContext, config, item);
+                DeleteNote.View(isDebugMode, databaseConnectionString, id);
                 break;
             
             default:
-                View(appDbContext, config, item, decryptedContent);
+                View(isDebugMode, databaseConnectionString, id, title, content);
                 return;
         }
     }
